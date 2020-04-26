@@ -44,11 +44,34 @@ class Comment extends Database
         }
     }
 
+    function get($id)
+    {
+        try {
+            $query = $this->database->prepare("SELECT * FROM `comments` WHERE `id` = :id");
+            $query->execute(array(":id" => $id));
+            return $query->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $exception) {
+            echo "Execution failed: " . $exception->getMessage();
+        }
+    }
+
     function add($name, $password, $content)
     {
         try {
             $sql = "INSERT INTO `comments` (name, password, content) VALUES(:name, :password, :content)";
             $param = array(":name" => $name, ":password" => $password, ":content" => $content);
+            $query = $this->database->prepare($sql);
+            $query->execute($param);
+        } catch (PDOException $exception) {
+            echo "Execution failed: " . $exception->getMessage();
+        }
+    }
+
+    function update($id, $name, $content)
+    {
+        try {
+            $sql = "UPDATE `comments` SET `name` = :name, `content` = :content WHERE `id` = :id";
+            $param = array(":id" => $id, ":name" => $name, ":content" => $content);
             $query = $this->database->prepare($sql);
             $query->execute($param);
         } catch (PDOException $exception) {

@@ -48,11 +48,30 @@ class Comment extends Controller
 
     function edit()
     {
-        if (empty($_POST)) {
+        if (empty($_POST) && isset($_GET["id"])) {
             $GLOBALS["view"]["title"] = "編輯留言";
+            $GLOBALS["view"]["comment"] = $this->comment_model->get($_GET["id"]);
+            if ($GLOBALS["view"]["comment"] === FALSE) {
+                header("Location: " . APP_URI);
+            }
             include_once "Views/header.php";
             include_once "Views/Comment/edit.php";
             include_once "Views/footer.php";
+        } else if (isset(
+            $_POST["id"],
+            $_POST["name"],
+            $_POST["password"],
+            $_POST["content"]
+        )) {
+            $comment = $this->comment_model->get($_POST["id"]);
+            if (password_verify($_POST["password"], $comment["password"]) === FALSE) {
+                exit("Password incorrect!");
+            }
+            $this->comment_model->update(
+                $_POST["id"],
+                empty($_POST["name"]) ? "匿名" : $_POST["name"],
+                $_POST["content"]
+            );
         }
     }
 
