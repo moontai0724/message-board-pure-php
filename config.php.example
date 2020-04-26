@@ -1,0 +1,14 @@
+<?php
+defined("APP_URI") or exit("Access forbidden.");
+
+$GLOBALS["website"] = array(
+    "title" => "匿名留言板"
+);
+
+$GLOBALS["database"] = array(
+    "host" => "127.0.0.1",
+    "port" => "3306",
+    "name" => "message_board",
+    "username" => "root",
+    "password" => ""
+);
