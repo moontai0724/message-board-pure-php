@@ -78,4 +78,16 @@ class Comment extends Database
             echo "Execution failed: " . $exception->getMessage();
         }
     }
+
+    function delete($id)
+    {
+        try {
+            $sql = "DELETE FROM `comments` WHERE `id` = :id";
+            $param = array(":id" => $id);
+            $query = $this->database->prepare($sql);
+            $query->execute($param);
+        } catch (PDOException $exception) {
+            echo "Execution failed: " . $exception->getMessage();
+        }
+    }
 }

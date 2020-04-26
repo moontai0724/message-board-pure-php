@@ -77,11 +77,21 @@ class Comment extends Controller
 
     function delete()
     {
-        if (empty($_POST)) {
+        if (empty($_POST) && isset($_GET["id"])) {
             $GLOBALS["view"]["title"] = "刪除留言";
+            $GLOBALS["view"]["comment"] = $this->comment_model->get($_GET["id"]);
             include_once "Views/header.php";
             include_once "Views/Comment/delete.php";
             include_once "Views/footer.php";
+        } else if (isset(
+            $_POST["id"],
+            $_POST["password"],
+        )) {
+            $comment = $this->comment_model->get($_POST["id"]);
+            if (password_verify($_POST["password"], $comment["password"]) === FALSE) {
+                exit("Password incorrect!");
+            }
+            $this->comment_model->delete($_POST["id"]);
         }
     }
 }
