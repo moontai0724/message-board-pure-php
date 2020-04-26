@@ -43,4 +43,16 @@ class Comment extends Database
             echo "Execution failed: " . $exception->getMessage();
         }
     }
+
+    function add($name, $password, $content)
+    {
+        try {
+            $sql = "INSERT INTO `comments` (name, password, content) VALUES(:name, :password, :content)";
+            $param = array(":name" => $name, ":password" => $password, ":content" => $content);
+            $query = $this->database->prepare($sql);
+            $query->execute($param);
+        } catch (PDOException $exception) {
+            echo "Execution failed: " . $exception->getMessage();
+        }
+    }
 }

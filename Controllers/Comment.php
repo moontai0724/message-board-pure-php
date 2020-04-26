@@ -33,6 +33,16 @@ class Comment extends Controller
             include_once "Views/header.php";
             include_once "Views/Comment/add.php";
             include_once "Views/footer.php";
+        } else if (isset(
+            $_POST["name"],
+            $_POST["password"],
+            $_POST["content"]
+        )) {
+            $this->comment_model->add(
+                empty($_POST["name"]) ? "匿名" : $_POST["name"],
+                empty($_POST["password"]) ? null : password_hash($_POST["password"], PASSWORD_BCRYPT),
+                $_POST["content"]
+            );
         }
     }
 
