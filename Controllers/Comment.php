@@ -20,6 +20,7 @@ class Comment extends Controller
     function list()
     {
         $GLOBALS["view"]["title"] = "留言列表";
+        $GLOBALS["view"]["comments"] = $this->comment_model->list();
         include_once "Views/header.php";
         include_once "Views/Comment/list.php";
         include_once "Views/footer.php";

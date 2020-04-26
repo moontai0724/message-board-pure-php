@@ -3,6 +3,7 @@
 namespace moontai0724\messageboard\Model;
 
 use moontai0724\messageboard\Core\Database;
+use PDO;
 use PDOException;
 
 include_once "Core/Database.php";
@@ -27,6 +28,17 @@ class Comment extends Database
                 "`content` TEXT NOT NULL COMMENT '留言內容'," .
                 "PRIMARY KEY (`id`)" .
                 ") ENGINE = InnoDB CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;");
+        } catch (PDOException $exception) {
+            echo "Execution failed: " . $exception->getMessage();
+        }
+    }
+
+    function list()
+    {
+        try {
+            $query = $this->database->prepare("SELECT * FROM `comments` ORDER BY `created_at` DESC");
+            $query->execute();
+            return $query->fetchALL(PDO::FETCH_ASSOC);
         } catch (PDOException $exception) {
             echo "Execution failed: " . $exception->getMessage();
         }
